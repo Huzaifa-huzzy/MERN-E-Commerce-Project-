@@ -9,18 +9,29 @@ function Shop() {
   const [openCategory, setOpenCategory] = useState(null);
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [showFloatingButton, setShowFloatingButton] = useState(true);
-  const [searchQuery, setSearchQuery] = useState(""); 
+  const [searchQuery, setSearchQuery] = useState("");
   const lastScrollTop = useRef(0);
+
+  const API_URL = import.meta.env.VITE_API_URL;
 
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await fetch("http://localhost:5000/api/products");
+        if (!API_URL) {
+          throw new Error('VITE_API_URL is not defined in the .env file');
+        }
+
+        const response = await fetch(`${API_URL}/api/products`);
+        if (!response.ok) {
+          throw new Error(`Failed to fetch: ${response.status} ${response.statusText}`);
+        }
+
         const data = await response.json();
         setProducts(data);
         setLoading(false);
       } catch (err) {
-        setError("Failed to fetch products");
+        console.error('Fetch error:', err);
+        setError(err.message || 'Failed to fetch products');
         setLoading(false);
       }
     };
@@ -49,7 +60,6 @@ function Shop() {
     return acc;
   }, {});
 
-  // Filter products based on selected collection and search query
   const filteredProducts = products.filter((product) => {
     const matchesCollection =
       !selectedCollection ||
@@ -101,7 +111,6 @@ function Shop() {
 
   return (
     <div className="relative">
-      {/* Floating Button for Mobile */}
       <div
         className={`md:hidden fixed bottom-6 left-1/2 transform -translate-x-1/2 z-30 transition-all duration-300 ease-in-out ${
           showFloatingButton ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8 pointer-events-none"
@@ -119,7 +128,6 @@ function Shop() {
       </div>
 
       <div className="flex flex-col md:flex-row">
-        {/* Sidebar Overlay for Mobile */}
         {sidebarOpen && (
           <div
             className="fixed inset-0 bg-black bg-opacity-50 z-10 md:hidden"
@@ -127,7 +135,6 @@ function Shop() {
           ></div>
         )}
 
-        {/* Sidebar */}
         <div
           className={`fixed md:static inset-y-0 pt-24 left-0 z-10 w-64 bg-gray-100 p-4 overflow-y-auto transform transition-transform duration-300 ease-in-out ${
             sidebarOpen ? "translate-x-0" : "-translate-x-full"
@@ -168,9 +175,7 @@ function Shop() {
           </button>
         </div>
 
-        {/* Main Content */}
         <div className="flex-1 p-4 md:p-8" style={{ paddingTop: "94px" }}>
-          {/* Header with Search */}
           <div className="flex justify-between items-center mb-4 md:mb-6">
             <h1 className="text-2xl md:text-3xl font-bold">
               {selectedCollection ? selectedCollection : "All Products"}

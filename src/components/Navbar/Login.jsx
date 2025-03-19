@@ -4,13 +4,14 @@ import { useCart } from '../ContextReducer/ContextReducer';
 
 function Login() {
   const [formData, setFormData] = useState({
-    identifier: '', // Changed from 'email' to 'identifier'
+    identifier: '',
     password: '',
   });
 
   const [errors, setErrors] = useState({});
   const navigate = useNavigate();
   const { handleLogin } = useCart();
+  const API_URL = import.meta.env.VITE_API_URL;
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -22,7 +23,10 @@ function Login() {
     setErrors({});
 
     try {
-      const response = await fetch('http://localhost:5000/api/auth/login', {
+      if (!API_URL) {
+        throw new Error('VITE_API_URL is not defined in the .env file');
+      }
+      const response = await fetch(`${API_URL}/api/auth/login`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData),
@@ -43,23 +47,18 @@ function Login() {
         return;
       }
 
-      // Store JWT token in localStorage
       localStorage.setItem('token', data.token);
 
-      // Handle cart merging and user data in the cart context
       await handleLogin({
         id: data.user.id || data.user._id,
         name: data.user.username,
         email: data.user.email,
       });
 
-      // Dispatch storage event to update Navbar
       window.dispatchEvent(new Event('storage'));
 
-      // Navigate to homepage
       navigate('/');
     } catch (error) {
-      console.error('Fetch error:', error);
       setErrors({ general: 'Network error, please try again' });
     }
   };
@@ -67,7 +66,6 @@ function Login() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-indigo-100 to-purple-100 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-md w-full space-y-8 bg-white p-8 rounded-xl shadow-2xl transform transition-all hover:shadow-3xl">
-        {/* Header */}
         <div>
           <h2 className="mt-6 text-center text-4xl font-bold text-gray-900 tracking-tight">
             Log In
@@ -77,18 +75,16 @@ function Login() {
           </p>
         </div>
 
-        {/* Form */}
         <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
           <div className="space-y-6">
-            {/* Identifier (Username or Email) */}
             <div>
               <label htmlFor="identifier" className="block text-sm font-medium text-gray-700">
                 Username or Email
               </label>
               <input
                 id="identifier"
-                name="identifier" // Changed from 'email' to 'identifier'
-                type="text" // Changed from 'email' to 'text' since it can be username too
+                name="identifier"
+                type="text"
                 value={formData.identifier}
                 onChange={handleChange}
                 className="mt-1 block w-full px-4 py-3 bg-gray-50 border border-gray-300 rounded-lg text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition duration-200"
@@ -97,7 +93,6 @@ function Login() {
               {errors.identifier && <p className="mt-1 text-sm text-red-600">{errors.identifier}</p>}
             </div>
 
-            {/* Password */}
             <div>
               <label htmlFor="password" className="block text-sm font-medium text-gray-700">
                 Password
@@ -115,12 +110,10 @@ function Login() {
             </div>
           </div>
 
-          {/* General Error */}
           {errors.general && (
             <p className="text-center text-sm text-red-600">{errors.general}</p>
           )}
 
-          {/* Forgot Password Link */}
           <div className="text-sm text-right">
             <Link
               to="/forgot-password"
@@ -130,7 +123,6 @@ function Login() {
             </Link>
           </div>
 
-          {/* Submit Button */}
           <div>
             <button
               type="submit"
@@ -141,7 +133,6 @@ function Login() {
           </div>
         </form>
 
-        {/* Signup Link */}
         <p className="mt-2 text-center text-sm text-gray-600">
           Don't have an account?{' '}
           <Link

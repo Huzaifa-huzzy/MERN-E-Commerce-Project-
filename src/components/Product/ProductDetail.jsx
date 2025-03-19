@@ -9,19 +9,22 @@ const ProductDetail = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [quantity, setQuantity] = useState(1);
-  const [selectedSize, setSelectedSize] = useState(''); // New state for selected size
+  const [selectedSize, setSelectedSize] = useState('');
   const { addToCart } = useCart();
   const navigate = useNavigate();
+  const API_URL = import.meta.env.VITE_API_URL;
 
   useEffect(() => {
     const fetchProduct = async () => {
       try {
         setLoading(true);
-        const response = await axios.get(`http://localhost:5000/api/products/${productId}`);
+        if (!API_URL) {
+          throw new Error('VITE_API_URL is not defined in the .env file');
+        }
+        const response = await axios.get(`${API_URL}/api/products/${productId}`);
         setProduct(response.data);
         setLoading(false);
       } catch (err) {
-        console.error('Error fetching product:', err);
         setError('Failed to load product details');
         setLoading(false);
       }
@@ -40,17 +43,21 @@ const ProductDetail = () => {
     }
 
     try {
-      await addToCart({
+      const success = await addToCart({
         _id: product._id,
         quantity: quantity,
         name: product.name,
-        price: product.options[selectedSize], // Use price based on selected size
+        price: product.options[selectedSize],
         img: product.img,
-        selectedOptions: { size: selectedSize }, // Pass selected size
+        selectedOptions: { size: selectedSize },
       });
-      alert('Product added to cart successfully!');
+      if (success) {
+        alert('Product added to cart successfully!');
+      } else {
+        alert('Please log in to add items to your cart!');
+        navigate('/login');
+      }
     } catch (error) {
-      console.error('Error adding to cart:', error);
       alert('Failed to add product to cart');
     }
   };
@@ -137,7 +144,6 @@ const ProductDetail = () => {
             <div className="border-t border-gray-200 my-6 pt-6">
               <p className="text-gray-700 mb-6">{product.description || 'No description available.'}</p>
 
-              {/* Size Selection */}
               {product.options && Object.keys(product.options).length > 0 && (
                 <div className="mb-6">
                   <h3 className="text-lg font-semibold text-gray-800 mb-3">Select Size</h3>

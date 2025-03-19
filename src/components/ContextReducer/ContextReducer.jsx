@@ -1,4 +1,3 @@
-// src/components/ContextReducer/ContextReducer.jsx
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import axios from 'axios';
 
@@ -16,14 +15,14 @@ export function CartProvider({ children }) {
   const [serverCart, setServerCart] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
 
+  const API_URL = import.meta.env.VITE_API_URL;
+
   useEffect(() => {
-    // Only store cart in localStorage for non-authenticated users
     if (!user || !user.token) {
       localStorage.setItem('cart', JSON.stringify(cart));
     }
   }, [cart, user]);
 
-  // Fetch server cart whenever user changes (login/logout) or after cart operations
   const fetchServerCart = async () => {
     if (!user || !user.token) {
       setServerCart(null);
@@ -32,14 +31,16 @@ export function CartProvider({ children }) {
 
     setIsLoading(true);
     try {
-      const response = await axios.get('http://localhost:5000/api/cart', {
+      if (!API_URL) {
+        throw new Error('VITE_API_URL is not defined in the .env file');
+      }
+      const response = await axios.get(`${API_URL}/api/cart`, {
         headers: { Authorization: `Bearer ${user.token}` },
       });
       const serverCartData = response.data.cart || response.data;
       setServerCart(serverCartData);
       setIsLoading(false);
     } catch (error) {
-      console.error('Error fetching cart:', error);
       setServerCart(null);
       setIsLoading(false);
     }
@@ -51,35 +52,26 @@ export function CartProvider({ children }) {
 
   const addToCart = async (product) => {
     setIsLoading(true);
-    if (user && user.token) {
-      try {
-        await axios.post(
-          'http://localhost:5000/api/cart/add',
-          { productId: product._id, quantity: product.quantity || 1 },
-          { headers: { Authorization: `Bearer ${user.token}` } }
-        );
-        // Fetch updated cart from server after adding item
-        await fetchServerCart();
-        return true;
-      } catch (error) {
-        console.error('Error adding to server cart:', error);
-        setIsLoading(false);
-        throw error;
+    if (!user || !user.token) {
+      setIsLoading(false);
+      return false; // Return false if user is not logged in
+    }
+
+    try {
+      if (!API_URL) {
+        throw new Error('VITE_API_URL is not defined in the .env file');
       }
-    } else {
-      setCart((prevCart) => {
-        const existingItem = prevCart.find(item => String(item._id) === String(product._id));
-        if (existingItem) {
-          return prevCart.map(item =>
-            String(item._id) === String(product._id)
-              ? { ...item, quantity: (item.quantity || 1) + (product.quantity || 1) }
-              : item
-          );
-        }
-        return [...prevCart, { ...product, quantity: product.quantity || 1 }];
-      });
+      await axios.post(
+        `${API_URL}/api/cart/add`,
+        { productId: product._id, quantity: product.quantity || 1 },
+        { headers: { Authorization: `Bearer ${user.token}` } }
+      );
+      await fetchServerCart();
       setIsLoading(false);
       return true;
+    } catch (error) {
+      setIsLoading(false);
+      throw error;
     }
   };
 
@@ -87,15 +79,16 @@ export function CartProvider({ children }) {
     setIsLoading(true);
     if (user && user.token) {
       try {
+        if (!API_URL) {
+          throw new Error('VITE_API_URL is not defined in the .env file');
+        }
         await axios.delete(
-          `http://localhost:5000/api/cart/remove/${productId}`,
+          `${API_URL}/api/cart/remove/${productId}`,
           { headers: { Authorization: `Bearer ${user.token}` } }
         );
-        // Fetch updated cart from server after removing item
         await fetchServerCart();
         return true;
       } catch (error) {
-        console.error('Error removing from server cart:', error);
         setIsLoading(false);
         throw error;
       }
@@ -114,7 +107,6 @@ export function CartProvider({ children }) {
       token: localStorage.getItem('token'),
     };
     setUser(updatedUser);
-    // Clear local cart when logging in
     localStorage.removeItem('cart');
   };
 

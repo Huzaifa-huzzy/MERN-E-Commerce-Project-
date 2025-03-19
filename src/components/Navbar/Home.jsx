@@ -1,4 +1,3 @@
-// Home.jsx
 import Hero from '../Hero/Hero';
 import Card from '../Card/Card';
 import { useState, useEffect } from 'react';
@@ -8,22 +7,29 @@ function Home() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
+  const API_URL = import.meta.env.VITE_API_URL;
+
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await fetch('http://localhost:5000/api/products');
+        if (!API_URL) {
+          throw new Error('API_URL is not defined in environment variables');
+        }
+        const response = await fetch(`${API_URL}/api/products`);
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
         const data = await response.json();
         setProducts(data);
         setLoading(false);
       } catch (err) {
-        setError('Failed to fetch products');
+        setError(err.message || 'Failed to fetch products');
         setLoading(false);
       }
     };
     fetchProducts();
-  }, []);
+  }, []); 
 
-  // Group products by CategoryName and limit to 4 per category
   const groupedProducts = products.reduce((acc, product) => {
     const category = product.CategoryName;
     if (!acc[category]) {
@@ -56,7 +62,6 @@ function Home() {
             <h2 className="text-2xl font-bold mb-6 text-gray-800 capitalize">
               {categoryName}
             </h2>
-            {/* Pass the filtered products to Card */}
             <Card products={categoryProducts} />
           </div>
         ))}

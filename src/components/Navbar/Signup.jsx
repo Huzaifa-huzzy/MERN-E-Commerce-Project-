@@ -10,6 +10,7 @@ function Signup() {
   });
 
   const [errors, setErrors] = useState({});
+  const API_URL = import.meta.env.VITE_API_URL;
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -21,7 +22,10 @@ function Signup() {
     setErrors({});
 
     try {
-      const response = await fetch('http://localhost:5000/api/auth/register', {
+      if (!API_URL) {
+        throw new Error('VITE_API_URL is not defined in the .env file');
+      }
+      const response = await fetch(`${API_URL}/api/auth/register`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData),
@@ -43,7 +47,6 @@ function Signup() {
       }
 
       alert('Signup successful!');
-      // Redirect to login page after successful signup
       window.location.href = '/login';
     } catch (error) {
       setErrors({ general: 'Network error, please try again' });
