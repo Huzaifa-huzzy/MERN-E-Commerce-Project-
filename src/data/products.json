@@ -1,0 +1,166 @@
+[
+    {
+        "CategoryName": "Mens",
+        "SubCategory": "Summer Wear",
+        "description": "Lightweight, breezy outfits perfect for warm days and relaxed outings.",
+        "name": "Men's Cotton T-Shirt",
+        "img": "https://images.pexels.com/photos/9558766/pexels-photo-9558766.jpeg?auto=compress&cs=tinysrgb&w=500",
+        "price": "25",
+        "options": {
+            "S": "25",
+            "M": "25",
+            "L": "30",
+            "XL": "35"
+        }
+    },
+    {
+        "CategoryName": "Mens",
+        "SubCategory": "Pent Shirt",
+        "description": "Cozy coats, jackets, and scarves that blend practicality with modern style.",
+        "name": "Men's Bomber Jacket",
+        "img": "https://images.pexels.com/photos/1375736/pexels-photo-1375736.jpeg?auto=compress&cs=tinysrgb&w=500",
+        "price": "60",
+        "options": {
+            "S": "60",
+            "M": "60",
+            "L": "65",
+            "XL": "70"
+        }
+    },
+    {
+        "CategoryName": "Mens",
+        "SubCategory": "Kurta Pajama",
+        "description": "Lightweight, breezy outfits perfect for warm days and relaxed outings.",
+        "name": "Men's Kurta Pajama",
+        "img": "https://images.pexels.com/photos/325876/pexels-photo-325876.jpeg?auto=compress&cs=tinysrgb&w=500",
+        "price": "35",
+        "options": {
+            "S": "35",
+            "M": "35",
+            "L": "40",
+            "XL": "45"
+        }
+    },
+    {
+        "CategoryName": "Mens",
+        "SubCategory": "Winter Wear",
+        "description": "Timeless pieces featuring intricate patterns and rich fabrics to honor heritage and festivities.",
+        "name": "Men's Kameez Shalwar",
+        "img": "https://images.pexels.com/photos/325876/pexels-photo-325876.jpeg?auto=compress&cs=tinysrgb&w=500",
+        "price": "40",
+        "options": {
+            "S": "40",
+            "M": "40",
+            "L": "45",
+            "XL": "50"
+        }
+    },
+    {
+        "CategoryName": "Womens",
+        "SubCategory": "Summer Wear",
+        "description": "Lightweight, breezy outfits perfect for warm days and relaxed outings.",
+        "name": "Women's Graphic Tee",
+        "img": "https://images.pexels.com/photos/1036620/pexels-photo-1036620.jpeg?auto=compress&cs=tinysrgb&w=500",
+        "price": "20",
+        "options": {
+            "S": "20",
+            "M": "20",
+            "L": "25",
+            "XL": "30"
+        }
+    },
+    {
+        "CategoryName": "Womens",
+        "SubCategory": "Pent Shirt",
+        "description": "Cozy coats, jackets, and scarves that blend practicality with modern style.",
+        "name": "Women's Trench Coat",
+        "img": "https://images.pexels.com/photos/1926769/pexels-photo-1926769.jpeg?auto=compress&cs=tinysrgb&w=500",
+        "price": "70",
+        "options": {
+            "S": "70",
+            "M": "70",
+            "L": "75",
+            "XL": "80"
+        }
+    },
+    {
+        "CategoryName": "Womens",
+        "SubCategory": "Winter Wear",
+        "description": "Timeless pieces featuring intricate patterns and rich fabrics to honor heritage and festivities.",
+        "name": "Women's Saree",
+        "img": "https://images.pexels.com/photos/13932135/pexels-photo-13932135.jpeg?auto=compress&cs=tinysrgb&w=500",
+        "price": "50",
+        "options": {
+            "S": "50",
+            "M": "50",
+            "L": "55",
+            "XL": "60"
+        }
+    },
+    {
+        "CategoryName": "Womens",
+        "SubCategory": "Winter Wear",
+        "description": "Timeless pieces featuring intricate patterns and rich fabrics to honor heritage and festivities.",
+        "name": "Women's Lehenga Choli",
+        "img": "https://images.pexels.com/photos/13932135/pexels-photo-13932135.jpeg?auto=compress&cs=tinysrgb&w=500",
+        "price": "60",
+        "options": {
+            "S": "60",
+            "M": "60",
+            "L": "65",
+            "XL": "70"
+        }
+    },
+    {
+        "CategoryName": "Kids",
+        "SubCategory": "Pent Shirt",
+        "description": "Cozy coats, jackets, and scarves that blend practicality with modern style.",
+        "name": "Kids' Hoodie",
+        "img": "https://images.pexels.com/photos/1619779/pexels-photo-1619779.jpeg?auto=compress&cs=tinysrgb&w=500",
+        "price": "20",
+        "options": {
+            "XS": "20",
+            "S": "25",
+            "M": "30"
+        }
+    },
+    {
+        "CategoryName": "Kids",
+        "SubCategory": "Summer Wear",
+        "description": "Playful, comfortable designs built to withstand adventures while keeping kids looking cute.",
+        "name": "Kids' Summer Shorts",
+        "img": "https://images.pexels.com/photos/5325082/pexels-photo-5325082.jpeg?auto=compress&cs=tinysrgb&w=500",
+        "price": "15",
+        "options": {
+            "XS": "15",
+            "S": "20",
+            "M": "25"
+        }
+    },
+    {
+        "CategoryName": "Kids",
+        "SubCategory": "Winter Wear",
+        "description": "Timeless pieces featuring intricate patterns and rich fabrics to honor heritage and festivities.",
+        "name": "Girls' Traditional Kurti",
+        "img": "https://images.pexels.com/photos/1620760/pexels-photo-1620760.jpeg?auto=compress&cs=tinysrgb&w=500",
+        "price": "25",
+        "options": {
+            "XS": "25",
+            "S": "30",
+            "M": "35"
+        }
+    },
+    {
+        "CategoryName": "Kids",
+        "SubCategory": "Summer Wear",
+        "description": "Playful, comfortable designs built to withstand adventures while keeping kids looking cute.",
+        "name": "Boys' Casual Tee",
+        "img": "https://images.pexels.com/photos/5325082/pexels-photo-5325082.jpeg?auto=compress&cs=tinysrgb&w=500",
+        "price": "15",
+        "options": {
+            "XS": "15",
+            "S": "20",
+            "M": "25"
+        }
+    }
+]
